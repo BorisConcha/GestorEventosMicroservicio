@@ -22,11 +22,13 @@ public class GestionEventos {
 
     @NotNull
     @Size(max=12)
+    @Pattern(regexp = "^([0-2][0-9]|3[0-1])(\\/|-)(0[1-9]|1[0-2])\\2(\\d{4})$")
     @Column(name = "fecha_inicio_evento")
     private String fecha_inicio_evento;
 
     @NotNull
     @Size(max=12)
+    @Pattern(regexp = "^([0-2][0-9]|3[0-1])(\\/|-)(0[1-9]|1[0-2])\\2(\\d{4})$")
     @Column(name = "fecha_fin_evento")
     private String fecha_fin_evento;
     
@@ -37,12 +39,10 @@ public class GestionEventos {
     private String tipo_evento;
 
     @NotNull
-    @Pattern(regexp = "^[0-9,$]*$")
     @Column(name = "cantidad_participantes")
     private int cantidad_participantes;
 
     @NotNull
-    @Pattern(regexp = "^[0-9,$]*$")
     @Column(name = "cantidad_entradas")
     private int cantidad_entradas;
 
