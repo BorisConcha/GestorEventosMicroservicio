@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -36,10 +37,12 @@ public class GestionEventos {
     private String tipo_evento;
 
     @NotNull
+    @Pattern(regexp = "^[0-9,$]*$")
     @Column(name = "cantidad_participantes")
     private int cantidad_participantes;
 
     @NotNull
+    @Pattern(regexp = "^[0-9,$]*$")
     @Column(name = "cantidad_entradas")
     private int cantidad_entradas;
 
