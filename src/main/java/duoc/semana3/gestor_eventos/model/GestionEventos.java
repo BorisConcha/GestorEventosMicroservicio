@@ -1,5 +1,7 @@
 package duoc.semana3.gestor_eventos.model;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,7 +15,7 @@ import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "eventos")
-public class GestionEventos {
+public class GestionEventos extends RepresentationModel<GestionEventos> {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "eventos_seq")
     @SequenceGenerator(name = "eventos_seq", sequenceName = "eventos_seq", allocationSize = 1)
