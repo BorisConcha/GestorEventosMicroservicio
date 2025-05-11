@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -24,6 +26,8 @@ import duoc.semana3.gestor_eventos.model.GestionEventos;
 import duoc.semana3.gestor_eventos.service.GestionEventosService;
 import duoc.semana3.gestor_eventos.service.GestionEventosServiceImpl;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @WebMvcTest(GestionEventosController.class)
@@ -104,5 +108,100 @@ public class GestionEventosControllerTest {
         assertTrue(response.hasLinks());
         assertTrue(response.getLinks().hasLink("self"));
 
+    }
+
+    @Test
+    public void createEventoTest() {
+
+        GestionEventos eventoRequest = new GestionEventos();
+        eventoRequest.setNombreEvento("Evento de prueba");
+        eventoRequest.setFechaInicio("12/10/2024");
+        eventoRequest.setFechaFin("14/10/2024");
+        eventoRequest.setTipoEvento("Conferencia");
+        eventoRequest.setCantParticipantes(5000);
+        eventoRequest.setCantEntradas(3500);
+        eventoRequest.setDescripcionEvento("Este es un evento de prueba");
+        
+        GestionEventos eventoCreado = new GestionEventos();
+        eventoCreado.setIdEvento(1L);
+        eventoCreado.setNombreEvento("Evento de prueba");
+        eventoCreado.setFechaInicio("12/10/2024");
+        eventoCreado.setFechaFin("14/10/2024");
+        eventoCreado.setTipoEvento("Conferencia");
+        eventoCreado.setCantParticipantes(5000);
+        eventoCreado.setCantEntradas(3500);
+        eventoCreado.setDescripcionEvento("Este es un evento de prueba");
+        
+        when(gestionEventosService.createEvento(any(GestionEventos.class))).thenReturn(eventoCreado);
+        
+        EntityModel<GestionEventos> response = gestionEventosController.createEvento(eventoRequest);
+        
+        verify(gestionEventosService).createEvento(any(GestionEventos.class));
+        
+        assertNotNull(response);
+        assertNotNull(response.getContent());
+        
+        GestionEventos resultado = response.getContent();
+        assertEquals(1L, resultado.getIdEvento());
+        assertEquals("Evento de prueba", resultado.getNombreEvento());
+        assertEquals("12/10/2024", resultado.getFechaInicio());
+        assertEquals("14/10/2024", resultado.getFechaFin());
+        assertEquals("Conferencia", resultado.getTipoEvento());
+        assertEquals(5000, resultado.getCantParticipantes());
+        assertEquals(3500, resultado.getCantEntradas());
+        assertEquals("Este es un evento de prueba", resultado.getDescripcionEvento());
+        
+        assertTrue(response.hasLinks());
+        assertNotNull(response.getLink("self").orElse(null));
+        assertNotNull(response.getLink("all-eventos").orElse(null));
+    }
+
+    @Test
+    public void updateEventoTest() {
+
+        GestionEventos eventoActualizado = new GestionEventos();
+        eventoActualizado.setIdEvento(1L);
+        eventoActualizado.setNombreEvento("Evento actualizado");
+        eventoActualizado.setFechaInicio("15/10/2024");
+        eventoActualizado.setFechaFin("17/10/2024");
+        eventoActualizado.setTipoEvento("Seminario");
+        eventoActualizado.setCantParticipantes(3000);
+        eventoActualizado.setCantEntradas(2500);
+        eventoActualizado.setDescripcionEvento("Este es un evento actualizado");
+        
+        GestionEventos eventoOriginal = new GestionEventos();
+        eventoOriginal.setIdEvento(1L);
+        eventoOriginal.setNombreEvento("Evento de prueba");
+        eventoOriginal.setFechaInicio("12/10/2024");
+        eventoOriginal.setFechaFin("14/10/2024");
+        eventoOriginal.setTipoEvento("Conferencia");
+        eventoOriginal.setCantParticipantes(5000);
+        eventoOriginal.setCantEntradas(3500);
+        eventoOriginal.setDescripcionEvento("Este es un evento de prueba");
+        
+        when(gestionEventosService.getEventosbyId(1L)).thenReturn(Optional.of(eventoOriginal));
+        
+        when(gestionEventosService.updateEvento(eq(1L), any(GestionEventos.class))).thenReturn(eventoActualizado);
+        
+        EntityModel<GestionEventos> response = gestionEventosController.updateEvento(1L, eventoActualizado);
+        
+        verify(gestionEventosService).updateEvento(eq(1L), any(GestionEventos.class));
+        
+        assertNotNull(response);
+        assertNotNull(response.getContent());
+        
+        GestionEventos resultado = response.getContent();
+        assertEquals(1L, resultado.getIdEvento());
+        assertEquals("Evento actualizado", resultado.getNombreEvento());
+        assertEquals("15/10/2024", resultado.getFechaInicio());
+        assertEquals("17/10/2024", resultado.getFechaFin());
+        assertEquals("Seminario", resultado.getTipoEvento());
+        assertEquals(3000, resultado.getCantParticipantes());
+        assertEquals(2500, resultado.getCantEntradas());
+        assertEquals("Este es un evento actualizado", resultado.getDescripcionEvento());
+        
+        assertTrue(response.hasLinks());
+        assertNotNull(response.getLink("self").orElse(null));
+        assertNotNull(response.getLink("all-eventos").orElse(null));
     }
 }

@@ -27,40 +27,21 @@ public class GestionEventosServiceTest {
 
         GestionEventos eventos = new GestionEventos();
 
-        eventos.setNombreEvento("La Momia");
-        eventos.setFechaInicio("1985");
-        eventos.setFechaFin("1985");
-        eventos.setTipoEvento("Stephen Sommers");
-        eventos.setCantParticipantes(1985);
-        eventos.setCantEntradas(1985);
-        eventos.setDescripcionEvento("Rick O'Connell y un compañero descubren las ruinas de Hamunaptra. Después vuelven al mismo lugar con una egiptóloga y su hermano. Allí coinciden con un grupo de americanos que provocan la resurrección de la momia de un diabólico sacerdote egipcio.");
+        eventos.setNombreEvento("Conferencia de prueba");
+        eventos.setFechaInicio("15/07/2020");
+        eventos.setFechaFin("15/07/2020");
+        eventos.setTipoEvento("Conferencia");
+        eventos.setCantParticipantes(8000);
+        eventos.setCantEntradas(7000);
+        eventos.setDescripcionEvento("Este es una conferencia de prueba");
+
 
         when(gestionEventosRepository.save(any())).thenReturn(eventos);
 
         GestionEventos resultado = gestionEventosServiceImplMock.createEvento(eventos);
 
-        assertEquals("La Momia", resultado.getNombreEvento());
+        assertEquals("Conferencia de prueba", resultado.getNombreEvento());
 
     }
 
-    @Test
-    public void updateEventoTest() {
-
-        GestionEventos eventos = new GestionEventos();
-
-        eventos.setNombreEvento("Torneo de ping pong regional de prueba");
-        eventos.setFechaInicio("20/06/2023");
-        eventos.setFechaFin("25/06/2023");
-        eventos.setTipoEvento("Competencia");
-        eventos.setCantParticipantes(10000);
-        eventos.setCantEntradas(10000);
-        eventos.setDescripcionEvento("Este es un torneo donde la gente podra jugar ping pong");
-
-        when(gestionEventosRepository.save(any())).thenReturn(eventos);
-
-        GestionEventos resultado = gestionEventosServiceImplMock.createEvento(eventos);
-
-        assertEquals("Torneo de ping pong regional de prueba", resultado.getNombreEvento());
-
-    }
 }
